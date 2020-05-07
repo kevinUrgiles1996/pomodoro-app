@@ -164,7 +164,12 @@ button:active {
   font-size: 15px;
 }
 
-@media only screen and (max-width: 600px) {
+.division {
+  width: 100%;
+  color: rgba(0, 0, 0, 0.377);
+}
+
+@media only screen and (max-width: 750px) {
   .modal {
     width: 70%;
   }
