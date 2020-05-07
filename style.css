@@ -8,13 +8,17 @@ body {
   font-family: sans-serif;
 }
 
-.container {
+.app-container {
   height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+#timer {
+  font-size: 70px;
 }
 
 .button-container {
@@ -39,23 +43,23 @@ button {
   color: white;
 }
 
-#startButton:hover {
-  background-color: rgb(199, 35, 35);
-}
-
 #resetButton {
   background-color: #fdcb2b;
   color: black;
-}
-
-#resetButton:hover {
-  background-color: #b38f1b;
 }
 
 #shortBreakButton,
 #longBreakButton {
   background-color: slategrey;
   color: white;
+}
+
+#startButton:hover {
+  background-color: rgb(199, 35, 35);
+}
+
+#resetButton:hover {
+  background-color: #b38f1b;
 }
 
 #shortBreakButton:hover,
@@ -68,17 +72,94 @@ button:active {
   transition: all 0.4s ease-in-out;
 }
 
-#timer {
-  font-size: 70px;
-}
-
-.config {
-  text-decoration: none;
-  font-size: 20px;
-  font-weight: bolder;
-}
-
-.config:hover {
-  transform: scale(0.95);
+.configButton:hover {
   cursor: pointer;
+  color: blueviolet;
+  transform: scale(0.9);
+  transition: all 0.4s ease-in-out;
+}
+
+.configButton:active {
+  transform: scale(0.8);
+  transition: all 0.1s ease-in-out;
+}
+
+/* Modal */
+
+.modal-container {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.8 ease-in-out;
+}
+
+.modal {
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 20px;
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  font-size: 15px;
+}
+
+.form-group input {
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.close-button {
+  cursor: pointer;
+  border-radius: 50%;
+  border: 1px solid red;
+  padding: 5px 10px;
+}
+
+.saveButton {
+  background-color: cornflowerblue;
+  color: white;
+  width: 30%;
+  height: 30px;
+  font-size: 15px;
+}
+
+.defaultButton {
+  height: 30px;
+  background-color: rgb(247, 194, 62);
+  font-size: 15px;
 }
