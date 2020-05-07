@@ -5,8 +5,7 @@
 }
 
 body {
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: sans-serif;
 }
 
 .container {
@@ -19,17 +18,17 @@ body {
 }
 
 .button-container {
-  height: 40vh;
   display: flex;
   flex-direction: column;
+  margin: 10px 0;
 }
 
 button {
   border: none;
   border-radius: 5px;
-  height: 35px;
+  height: 40px;
   width: 200px;
-  margin: 15px;
+  margin: 10px 0;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   font-size: 20px;
@@ -45,13 +44,12 @@ button {
 }
 
 #resetButton {
-  background-color: rgb(255, 255, 3);
+  background-color: #fdcb2b;
   color: black;
 }
 
 #resetButton:hover {
-  background-color: rgb(182, 182, 21);
-  color: white;
+  background-color: #b38f1b;
 }
 
 #shortBreakButton,
@@ -60,21 +58,27 @@ button {
   color: white;
 }
 
+#shortBreakButton:hover,
+#longBreakButton:hover {
+  background-color: rgb(74, 79, 83);
+}
+
 button:active {
-  transform: scale(0.97);
-  background-color: white;
-  color: black;
-  transition: all 0.1s ease-in-out;
+  transform: scale(0.85);
+  transition: all 0.4s ease-in-out;
 }
 
 #timer {
-  transition: all 0.1s ease-in-out;
-  font-size: 100px;
+  font-size: 70px;
 }
 
-.stats {
+.config {
   text-decoration: none;
   font-size: 20px;
-  color: purple;
   font-weight: bolder;
+}
+
+.config:hover {
+  transform: scale(0.95);
+  cursor: pointer;
 }
