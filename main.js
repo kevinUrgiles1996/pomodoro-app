@@ -1,13 +1,12 @@
 const timer = document.getElementById('timer');
 const startButton = document.getElementById('startButton');
-const resetButton = document.getElementById('resetButton');
 const shortBreakButton = document.getElementById('shortBreakButton');
 const longBreakButton = document.getElementById('longBreakButton');
+const clearTimeButton = document.getElementById('clearTimeButton');
 
 const configButton = document.querySelector('.configButton');
 const modalContainer = document.querySelector('.modal-container');
 const modal = document.querySelector('.modal');
-const closeButton = document.querySelector('.close-button');
 
 const tomatoMinutesInput = document.getElementsByName('tomato-minutes')[0];
 const shortBreakMinutesInput = document.getElementsByName('short-minutes')[0];
@@ -46,15 +45,17 @@ const endTimer = () => {
   setTimeout(() => alert('Timer has ended'), 1000);
 };
 
-startButton.addEventListener('click', (e) => startContDown(tomatoMinutes));
-shortBreakButton.addEventListener('click', (e) =>
-  startContDown(shortBreakMinutes)
-);
-longBreakButton.addEventListener('click', (e) =>
-  startContDown(longBreakMinutes)
-);
+startButton.addEventListener('click', (e) => {
+  startContDown(tomatoMinutes);
+});
+shortBreakButton.addEventListener('click', (e) => {
+  startContDown(shortBreakMinutes);
+});
+longBreakButton.addEventListener('click', (e) => {
+  startContDown(longBreakMinutes);
+});
 
-resetButton.addEventListener('click', (e) => {
+clearTimeButton.addEventListener('click', (e) => {
   clearInterval(intervalId);
   timer.textContent = '00:00';
 });
@@ -74,18 +75,23 @@ modal.addEventListener('click', (e) => {
   e.stopPropagation();
 });
 
+const clearTimer = () => {
+  modalContainer.classList.remove('visible');
+  clearInterval(intervalId);
+  timer.textContent = '00:00';
+  setTimeout(() => alert('Changes saved correctly'), 500);
+};
+
 saveButton.addEventListener('click', (e) => {
   tomatoMinutes = tomatoMinutesInput.value;
   shortBreakMinutes = shortBreakMinutesInput.value;
   longBreakMinutes = longBreakMinutesInput.value;
-  modalContainer.classList.remove('visible');
-  setTimeout(() => alert('Changes saved correctly'), 500);
+  clearTimer();
 });
 
 defaultButton.addEventListener('click', (e) => {
   tomatoMinutes = 25;
   shortBreakMinutes = 5;
   longBreakMinutes = 15;
-  modalContainer.classList.remove('visible');
-  setTimeout(() => alert('Changes saved correctly'), 500);
+  clearTimer();
 });
