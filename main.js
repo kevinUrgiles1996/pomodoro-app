@@ -9,6 +9,16 @@ const modalContainer = document.querySelector('.modal-container');
 const modal = document.querySelector('.modal');
 const closeButton = document.querySelector('.close-button');
 
+const tomatoMinutesInput = document.getElementsByName('tomato-minutes')[0];
+const shortBreakMinutesInput = document.getElementsByName('short-minutes')[0];
+const longBreakMinutesInput = document.getElementsByName('long-minutes')[0];
+const saveButton = document.querySelector('.saveButton');
+const defaultButton = document.querySelector('.defaultButton');
+
+let tomatoMinutes = 25;
+let shortBreakMinutes = 5;
+let longBreakMinutes = 15;
+
 let totalSeconds;
 let intervalId;
 
@@ -36,9 +46,13 @@ const endTimer = () => {
   setTimeout(() => alert('Timer has ended'), 1000);
 };
 
-startButton.addEventListener('click', (e) => startContDown(25));
-shortBreakButton.addEventListener('click', (e) => startContDown(5));
-longBreakButton.addEventListener('click', (e) => startContDown(15));
+startButton.addEventListener('click', (e) => startContDown(tomatoMinutes));
+shortBreakButton.addEventListener('click', (e) =>
+  startContDown(shortBreakMinutes)
+);
+longBreakButton.addEventListener('click', (e) =>
+  startContDown(longBreakMinutes)
+);
 
 resetButton.addEventListener('click', (e) => {
   clearInterval(intervalId);
@@ -46,6 +60,9 @@ resetButton.addEventListener('click', (e) => {
 });
 
 configButton.addEventListener('click', (e) => {
+  tomatoMinutesInput.value = tomatoMinutes;
+  shortBreakMinutesInput.value = shortBreakMinutes;
+  longBreakMinutesInput.value = longBreakMinutes;
   modalContainer.classList.add('visible');
 });
 
@@ -55,4 +72,20 @@ modalContainer.addEventListener('click', (e) => {
 
 modal.addEventListener('click', (e) => {
   e.stopPropagation();
+});
+
+saveButton.addEventListener('click', (e) => {
+  tomatoMinutes = tomatoMinutesInput.value;
+  shortBreakMinutes = shortBreakMinutesInput.value;
+  longBreakMinutes = longBreakMinutesInput.value;
+  modalContainer.classList.remove('visible');
+  setTimeout(() => alert('Changes saved correctly'), 500);
+});
+
+defaultButton.addEventListener('click', (e) => {
+  tomatoMinutes = 25;
+  shortBreakMinutes = 5;
+  longBreakMinutes = 15;
+  modalContainer.classList.remove('visible');
+  setTimeout(() => alert('Changes saved correctly'), 500);
 });
