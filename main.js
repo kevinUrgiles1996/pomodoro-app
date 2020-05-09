@@ -81,6 +81,7 @@ const clearTimer = () => {
   clearInterval(intervalId);
   timer.textContent = '00:00';
   notify('Changes saved correctly');
+  mobileNotify('Changes saved correctly');
 };
 
 saveButton.addEventListener('click', e => {
@@ -116,6 +117,12 @@ const notify = message => {
     body: `${message}`,
   });
   setTimeout(notification.close.bind(notification), 1500);
+};
+
+const mobileNotify = message => {
+  navigator.serviceWorker.ready.then(function (registration) {
+    registration.showNotification(message);
+  });
 };
 
 window.addEventListener('load', () => {
