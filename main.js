@@ -20,7 +20,6 @@ let shortBreakMinutes = 5;
 let longBreakMinutes = 15;
 
 // Notifications
-
 let swRegistration;
 
 let totalSeconds;
@@ -36,6 +35,11 @@ const countDown = () => {
   seconds = seconds < 10 ? '0' + seconds : seconds;
 
   timer.textContent = `${minutes}:${seconds}`;
+  // showLocalNotification(
+  //   'Pomodoro App',
+  //   `${minutes}:${seconds}`,
+  //   swRegistration
+  // );
   totalSeconds--;
 };
 
@@ -47,7 +51,6 @@ const startContDown = minutes => {
 
 const endTimer = () => {
   clearInterval(intervalId);
-  // alert('Timer has ended');
   showLocalNotification('Pomodoro App', 'Timer has Ended', swRegistration);
 };
 
@@ -85,7 +88,6 @@ const clearTimer = () => {
   modalContainer.classList.remove('visible');
   clearInterval(intervalId);
   timer.textContent = '00:00';
-  // alert('Changes saved correctly');
   showLocalNotification('Pomodoro App', 'Changes saved!', swRegistration);
 };
 
@@ -126,11 +128,14 @@ const requestNotificationPermission = async () => {
   }
 };
 
-const showLocalNotification = (title, body, swRegistration) => {
+const showLocalNotification = async (title, body, swRegistration) => {
   const options = {
     body,
+    icon:
+      'https://cdn4.iconfinder.com/data/icons/food-drink-14/24/Tomato-512.png',
+    sound: '',
   };
-  swRegistration.showNotification(title, options);
+  const notification = await swRegistration.showNotification(title, options);
 };
 
 const main = async () => {
