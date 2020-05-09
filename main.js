@@ -35,11 +35,6 @@ const countDown = () => {
   seconds = seconds < 10 ? '0' + seconds : seconds;
 
   timer.textContent = `${minutes}:${seconds}`;
-  showLocalNotification(
-    'Pomodoro App',
-    `${minutes}:${seconds}`,
-    swRegistration
-  );
   totalSeconds--;
 };
 
@@ -51,7 +46,7 @@ const startContDown = minutes => {
 
 const endTimer = () => {
   clearInterval(intervalId);
-  showLocalNotification('Pomodoro App', 'Timer has Ended', swRegistration);
+  showLocalNotification('Pomodoro App', 'Timer has ended', swRegistration);
 };
 
 startButton.addEventListener('click', e => {
