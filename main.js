@@ -134,10 +134,10 @@ const showLocalNotification = async (title, body, swRegistration) => {
 };
 
 const main = async () => {
+  window.stop();
   check();
   swRegistration = await registerServiceWorker();
   await requestNotificationPermission();
-  var notification = new Notification('Hi there!');
 };
 
 main();
