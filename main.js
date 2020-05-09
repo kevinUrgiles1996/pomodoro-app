@@ -19,6 +19,10 @@ let tomatoMinutes = 25;
 let shortBreakMinutes = 5;
 let longBreakMinutes = 15;
 
+// Notifications
+
+let swRegistration;
+
 let totalSeconds;
 let intervalId;
 
@@ -43,7 +47,8 @@ const startContDown = minutes => {
 
 const endTimer = () => {
   clearInterval(intervalId);
-  notify('Timer has ended');
+  // alert('Timer has ended');
+  showLocalNotification('Pomodoro App', 'Timer has Ended', swRegistration);
 };
 
 startButton.addEventListener('click', e => {
@@ -80,8 +85,8 @@ const clearTimer = () => {
   modalContainer.classList.remove('visible');
   clearInterval(intervalId);
   timer.textContent = '00:00';
-  // notify('Changes saved correctly');
-  mobileNotify('Changes saved correctly');
+  // alert('Changes saved correctly');
+  showLocalNotification('Pomodoro App', 'Changes saved!', swRegistration);
 };
 
 saveButton.addEventListener('click', e => {
@@ -98,40 +103,40 @@ defaultButton.addEventListener('click', e => {
   clearTimer();
 });
 
-const enableNotifications = () => {
-  if (!('Notification' in window)) {
-    alert('This browser does not support system notifications');
-  } else if (Notification.permission === 'denied') {
-    Notification.requestPermission(permission => {
-      if (permission !== 'granted') {
-        enableNotifications();
-      }
-    });
-  } else {
-    console.log('Notifications enabled');
+// NOTIFICATIONS
+
+const check = () => {
+  if (!('serviceWorker' in navigator)) {
+    throw new Error('No service Worker support!');
+  }
+  if (!('PushManager' in window)) {
+    throw new Error('No Push API Support!');
   }
 };
 
-const notify = message => {
-  let notification = new Notification('Notification', {
-    body: `${message}`,
-  });
-  setTimeout(notification.close.bind(notification), 1500);
+const registerServiceWorker = async () => {
+  const swRegistration = await navigator.serviceWorker.register('service.js');
+  return swRegistration;
 };
 
-const mobileNotify = message => {
-  navigator.serviceWorker.getRegistration().then(reg => {
-    reg.showNotification(`${message}`);
-  });
+const requestNotificationPermission = async () => {
+  const permission = await window.Notification.requestPermission();
+  if (permission !== 'granted') {
+    throw new Error('Permission not granted for Notification');
+  }
 };
 
-window.addEventListener('load', () => {
-  enableNotifications();
-  Notification.requestPermission(function (result) {
-    if (result === 'granted') {
-      navigator.serviceWorker.ready.then(function (registration) {
-        registration.showNotification('Notification with ServiceWorker');
-      });
-    }
-  });
-});
+const showLocalNotification = (title, body, swRegistration) => {
+  const options = {
+    body,
+  };
+  swRegistration.showNotification(title, options);
+};
+
+const main = async () => {
+  check();
+  swRegistration = await registerServiceWorker();
+  await requestNotificationPermission();
+};
+
+main();
