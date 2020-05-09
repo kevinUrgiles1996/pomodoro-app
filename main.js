@@ -137,6 +137,7 @@ const main = async () => {
   check();
   swRegistration = await registerServiceWorker();
   await requestNotificationPermission();
+  var notification = new Notification('Hi there!');
 };
 
 main();
