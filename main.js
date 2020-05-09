@@ -102,18 +102,30 @@ const enableNotifications = () => {
     alert('This browser does not support system notifications');
   } else if (Notification.permission === 'denied') {
     Notification.requestPermission(permission => {
-      if (permission === 'denied') {
+      if (permission !== 'granted') {
         enableNotifications();
       }
     });
+  } else {
+    console.log('Notifications enabled');
   }
 };
 
 const notify = message => {
-  let notification = new Notification('TITLE', {
+  let notification = new Notification('Notification', {
     body: `${message}`,
   });
   setTimeout(notification.close.bind(notification), 1500);
 };
 
-enableNotifications();
+window.addEventListener('load', () => {
+  enableNotifications();
+  navigator.serviceWorker.register('sw.js');
+  Notification.requestPermission(function (result) {
+    if (result === 'granted') {
+      navigator.serviceWorker.ready.then(function (registration) {
+        registration.showNotification('Notification with ServiceWorker');
+      });
+    }
+  });
+});
