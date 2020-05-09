@@ -131,17 +131,23 @@ const requestNotificationPermission = async () => {
 const showLocalNotification = async (title, body, swRegistration) => {
   const options = {
     body,
-    icon:
-      'https://cdn4.iconfinder.com/data/icons/food-drink-14/24/Tomato-512.png',
+    icon: 'img/tomato.png',
     sound: '',
   };
-  const notification = await swRegistration.showNotification(title, options);
+  await swRegistration.showNotification(title, options);
 };
 
 const main = async () => {
   check();
   swRegistration = await registerServiceWorker();
   await requestNotificationPermission();
+  var notification = new Notification('Pomodoro App', {
+    icon:
+      'https://cdn4.iconfinder.com/data/icons/food-drink-14/24/Tomato-512.png',
+    body: 'Bienvenido a esta App',
+    sound: 'audio/music.mp3',
+  });
+  console.log(notification.icon);
 };
 
 main();
