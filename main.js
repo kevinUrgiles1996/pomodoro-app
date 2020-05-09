@@ -4,7 +4,7 @@ const shortBreakButton = document.getElementById('shortBreakButton');
 const longBreakButton = document.getElementById('longBreakButton');
 const clearTimeButton = document.getElementById('clearTimeButton');
 
-const configButton = document.querySelector('.configButton');
+const settingsButton = document.querySelector('.settingsButton');
 const modalContainer = document.querySelector('.modal-container');
 const modal = document.querySelector('.modal');
 
@@ -14,6 +14,7 @@ const longBreakMinutesInput = document.getElementsByName('long-minutes')[0];
 const saveButton = document.querySelector('.saveButton');
 const defaultButton = document.querySelector('.defaultButton');
 
+// Default Values
 let tomatoMinutes = 25;
 let shortBreakMinutes = 5;
 let longBreakMinutes = 15;
@@ -34,7 +35,7 @@ const countDown = () => {
   totalSeconds--;
 };
 
-const startContDown = (minutes) => {
+const startContDown = minutes => {
   clearInterval(intervalId);
   totalSeconds = minutes * 60;
   intervalId = setInterval(countDown, 1000);
@@ -42,36 +43,36 @@ const startContDown = (minutes) => {
 
 const endTimer = () => {
   clearInterval(intervalId);
-  setTimeout(() => alert('Timer has ended'), 1000);
+  notify('Timer has ended');
 };
 
-startButton.addEventListener('click', (e) => {
+startButton.addEventListener('click', e => {
   startContDown(tomatoMinutes);
 });
-shortBreakButton.addEventListener('click', (e) => {
+shortBreakButton.addEventListener('click', e => {
   startContDown(shortBreakMinutes);
 });
-longBreakButton.addEventListener('click', (e) => {
+longBreakButton.addEventListener('click', e => {
   startContDown(longBreakMinutes);
 });
 
-clearTimeButton.addEventListener('click', (e) => {
+clearTimeButton.addEventListener('click', e => {
   clearInterval(intervalId);
   timer.textContent = '00:00';
 });
 
-configButton.addEventListener('click', (e) => {
+settingsButton.addEventListener('click', e => {
   tomatoMinutesInput.value = tomatoMinutes;
   shortBreakMinutesInput.value = shortBreakMinutes;
   longBreakMinutesInput.value = longBreakMinutes;
   modalContainer.classList.add('visible');
 });
 
-modalContainer.addEventListener('click', (e) => {
+modalContainer.addEventListener('click', e => {
   modalContainer.classList.remove('visible');
 });
 
-modal.addEventListener('click', (e) => {
+modal.addEventListener('click', e => {
   e.stopPropagation();
 });
 
@@ -79,19 +80,40 @@ const clearTimer = () => {
   modalContainer.classList.remove('visible');
   clearInterval(intervalId);
   timer.textContent = '00:00';
-  setTimeout(() => alert('Changes saved correctly'), 500);
+  notify('Changes saved correctly');
 };
 
-saveButton.addEventListener('click', (e) => {
+saveButton.addEventListener('click', e => {
   tomatoMinutes = tomatoMinutesInput.value;
   shortBreakMinutes = shortBreakMinutesInput.value;
   longBreakMinutes = longBreakMinutesInput.value;
   clearTimer();
 });
 
-defaultButton.addEventListener('click', (e) => {
+defaultButton.addEventListener('click', e => {
   tomatoMinutes = 25;
   shortBreakMinutes = 5;
   longBreakMinutes = 15;
   clearTimer();
 });
+
+const enableNotifications = () => {
+  if (!('Notification' in window)) {
+    alert('This browser does not support system notifications');
+  } else if (Notification.permission === 'denied') {
+    Notification.requestPermission(permission => {
+      if (permission === 'denied') {
+        enableNotifications();
+      }
+    });
+  }
+};
+
+const notify = message => {
+  let notification = new Notification('TITLE', {
+    body: `${message}`,
+  });
+  setTimeout(notification.close.bind(notification), 1500);
+};
+
+enableNotifications();

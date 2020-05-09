@@ -10,12 +10,12 @@
     <div class="app-container">
       <p id="timer">00:00</p>
       <div class="button-container">
-        <button id="startButton">Start Tomato</button>
-        <button id="shortBreakButton">Short Break</button>
-        <button id="longBreakButton">Long Break</button>
-        <button id="clearTimeButton">Clear Time</button>
+        <button id="startButton" class="app-button">Start Tomato</button>
+        <button id="shortBreakButton" class="app-button">Short Break</button>
+        <button id="longBreakButton" class="app-button">Long Break</button>
+        <button id="clearTimeButton" class="app-button">Clear Time</button>
       </div>
-      <a class="configButton">
+      <a class="settingsButton">
         <svg
           class="bi bi-gear"
           width="30px"
@@ -55,11 +55,11 @@
             <label for="long-minutes">Minutes in Long Break</label>
             <input type="number" name="long-minutes" />
           </div>
-          <button class="saveButton">Save</button>
+          <button class="saveButton configButton">Save</button>
         </div>
         <hr class="division" />
         <div class="modal-footer">
-          <button class="defaultButton">Reset to default</button>
+          <button class="defaultButton configButton">Reset to default</button>
         </div>
       </div>
     </div>

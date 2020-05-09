@@ -9,8 +9,11 @@ body {
 }
 
 .app-container {
+  /* height: 400px;
+  width: 250px; */
   height: 100vh;
   width: 100vw;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,7 +30,7 @@ body {
   margin: 10px 0;
 }
 
-button {
+.app-button {
   border: none;
   border-radius: 5px;
   height: 40px;
@@ -36,11 +39,16 @@ button {
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   font-size: 20px;
+  color: white;
 }
 
 #startButton {
   background-color: red;
-  color: white;
+}
+
+#shortBreakButton,
+#longBreakButton {
+  background-color: slategrey;
 }
 
 #clearTimeButton {
@@ -48,18 +56,8 @@ button {
   color: black;
 }
 
-#shortBreakButton,
-#longBreakButton {
-  background-color: slategrey;
-  color: white;
-}
-
 #startButton:hover {
   background-color: rgb(199, 35, 35);
-}
-
-#resetButton:hover {
-  background-color: #b38f1b;
 }
 
 #shortBreakButton:hover,
@@ -67,20 +65,24 @@ button {
   background-color: rgb(74, 79, 83);
 }
 
-button:active {
+#clearTimeButton:hover {
+  background-color: #b38f1b;
+}
+
+.app-button:active {
   transform: scale(0.85);
   transition: all 0.4s ease-in-out;
 }
 
-.configButton:hover {
+.settingsButton:hover {
   cursor: pointer;
   color: blueviolet;
-  transform: scale(0.9);
+  transform: scale(0.95);
   transition: all 0.4s ease-in-out;
 }
 
-.configButton:active {
-  transform: scale(0.8);
+.settingsButton:active {
+  transform: scale(0.9);
   transition: all 0.1s ease-in-out;
 }
 
@@ -98,19 +100,17 @@ button:active {
   align-items: center;
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0.8 ease-in-out;
+  transition: visibility 1s ease-in-out;
 }
 
 .modal {
   background-color: white;
-  border: 1px solid white;
   border-radius: 5px;
   padding: 20px;
   display: flex;
   width: 30%;
   flex-direction: column;
   justify-content: space-around;
-  align-items: flex-start;
 }
 
 .visible {
@@ -129,7 +129,6 @@ button:active {
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
-  font-size: 15px;
 }
 
 .form-group input {
@@ -137,25 +136,29 @@ button:active {
   padding: 5px;
 }
 
-.close-button {
+.configButton {
+  border: none;
+  border-radius: 5px;
+  height: 30px;
+  font-size: 15px;
   cursor: pointer;
-  border-radius: 50%;
-  border: 1px solid red;
-  padding: 5px 10px;
+  margin: 10px 0;
+  transition: transform 0.6s ease-in-out;
+}
+
+.configButton:hover {
+  transform: scale(0.95);
 }
 
 .saveButton {
   background-color: cornflowerblue;
   color: white;
   width: 30%;
-  height: 30px;
-  font-size: 15px;
 }
 
 .defaultButton {
-  height: 30px;
   background-color: rgb(247, 194, 62);
-  font-size: 15px;
+  width: 60%;
 }
 
 .division {
@@ -165,12 +168,13 @@ button:active {
 
 @media only screen and (max-width: 750px) {
   .modal {
-    width: 70%;
+    width: 80%;
   }
   .modal-footer {
     width: 100%;
   }
-  .defaultButton {
+  .defaultButton,
+  .saveButton {
     width: 100%;
   }
 }
