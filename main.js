@@ -80,7 +80,7 @@ const clearTimer = () => {
   modalContainer.classList.remove('visible');
   clearInterval(intervalId);
   timer.textContent = '00:00';
-  notify('Changes saved correctly');
+  // notify('Changes saved correctly');
   mobileNotify('Changes saved correctly');
 };
 
@@ -120,14 +120,13 @@ const notify = message => {
 };
 
 const mobileNotify = message => {
-  navigator.serviceWorker.ready.then(function (registration) {
-    registration.showNotification(message);
+  navigator.serviceWorker.getRegistration().then(reg => {
+    reg.showNotification(`${message}`);
   });
 };
 
 window.addEventListener('load', () => {
   enableNotifications();
-  navigator.serviceWorker.register('sw.js');
   Notification.requestPermission(function (result) {
     if (result === 'granted') {
       navigator.serviceWorker.ready.then(function (registration) {
