@@ -146,8 +146,8 @@ const main = async () => {
 
 const openDB = () => {
   let createDB = window.indexedDB.open('pomodoro', 1);
-  createDB.onerror = () => console.error('There was an error openning the DB');
   createDB.onsuccess = () => (DB = createDB.result);
+  createDB.onerror = () => console.error('There was an error openning the DB');
   // This method just runs once. Ideal to create Schemas
   createDB.onupgradeneeded = e => {
     let db = e.target.result;
@@ -179,7 +179,7 @@ saveNewRecord = objectStore => {
   };
 };
 
-updateRecord = (data, objectStore) => {
+updateExistingRecord = (data, objectStore) => {
   data[timerType]++;
   let recordUpdateRequest = objectStore.put(data);
 
@@ -201,7 +201,7 @@ const saveOrUpdate = () => {
   recordGetRequest.onsuccess = () => {
     let data = recordGetRequest.result;
     if (!data) saveNewRecord(objectStore);
-    else updateRecord(data, objectStore);
+    else updateExistingRecord(data, objectStore);
   };
 
   recordGetRequest.onerror = () => {
