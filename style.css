@@ -179,6 +179,8 @@ body {
   }
 }
 
+/* Stats */
+
 .stats-container {
   height: 100vh;
   width: 100vw;
@@ -213,9 +215,18 @@ body {
   margin: 5px 0;
 }
 
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}
+
 .input-container select {
   padding: 10px;
   font-size: 15px;
+  border-radius: 3px;
+  background-color: white;
 }
 
 .input-container label {
