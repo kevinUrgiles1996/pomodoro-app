@@ -254,8 +254,8 @@ select {
   padding: 15px;
 }
 
-.chart-img {
-  width: 100%;
+.chart {
+  /* padding: 25px; */
 }
 
 @media only screen and (max-width: 775px) {
