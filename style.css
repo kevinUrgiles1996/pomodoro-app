@@ -246,7 +246,8 @@ select {
 
 .chart-container {
   grid-area: chart;
-  padding: 20px 50px;
+  padding: 10px 50px;
+  padding-bottom: 0;
 }
 
 .summary-container {
@@ -277,7 +278,7 @@ select {
       'picker picker'
       'chart chart'
       'summary summary';
-    grid-template-rows: 0.8fr 1fr 3fr 2fr;
+    grid-template-rows: 0.8fr 1fr 2.5fr 2fr;
     grid-template-columns: 2fr 1fr;
   }
 

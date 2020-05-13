@@ -21,8 +21,7 @@ const getRecordsFromDB = () => {
   const getRecords = objectStore.getAll();
 
   getRecords.onsuccess = e => {
-    storedRecords = e.target.result;
-    console.log(storedRecords);
+    storedRecords = Array.from(e.target.result).reverse();
   };
   getRecords.onerror = e => {
     console.log('There was an error getting the records');
