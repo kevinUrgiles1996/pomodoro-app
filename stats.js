@@ -46,7 +46,7 @@ const drawChart = () => {
           {
             ticks: {
               beginAtZero: true,
-              precision: 0,
+              fixedStepSize: 1,
             },
           },
         ],
