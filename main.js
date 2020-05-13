@@ -14,7 +14,7 @@ const longBreakMinutesInput = document.getElementsByName('long-minutes')[0];
 const saveButton = document.querySelector('.saveButton');
 const defaultButton = document.querySelector('.defaultButton');
 
-// Default Values, inserted the first time to the DB
+// Default Values, inserted the first time to the DB and to reset values
 const defaultValues = {
   pomodoroMinutes: 25,
   shortBreakMinutes: 5,
@@ -177,18 +177,18 @@ const openDB = () => {
     objectStore.createIndex('longBreaks', 'longBreaks', { unique: false });
 
     let valueObjectStore = db.createObjectStore('values', {
-      keyPath: 'pomodoroMinutes',
-      autoIncrement: false,
+      keyPath: 'key',
+      autoIncrement: true,
     });
 
     valueObjectStore.createIndex('pomodoroMinutes', 'pomodoroMinutes', {
-      unique: true,
+      unique: false,
     });
     valueObjectStore.createIndex('shortBreakMinutes', 'shortBreakMinutes', {
-      unique: true,
+      unique: false,
     });
     valueObjectStore.createIndex('longBreakMinutes', 'longBreakMinutes', {
-      unique: true,
+      unique: false,
     });
     let valueAddRequest = valueObjectStore.add(defaultValues);
     valueAddRequest.onsuccess = () => {
@@ -257,6 +257,34 @@ const saveOrUpdate = () => {
   };
   transaction.onerror = () => {
     console.log('There was an error');
+  };
+};
+
+const saveMinutesToDB = () => {
+  let transaction = DB.transaction(['values'], 'readwrite');
+  let objectStore = transaction.objectStore('values');
+  let key = 1;
+
+  let valueGetRequest = objectStore.get(key);
+
+  valueGetRequest.onsuccess = () => {
+    let data = valueGetRequest.result;
+    data.pomodoroMinutes = parseInt(pomodoroMinutes);
+    data.shortBreakMinutes = parseInt(shortBreakMinutes);
+    data.longBreakMinutes = parseInt(longBreakMinutes);
+
+    let valueUpdateRequest = objectStore.put(data);
+
+    valueUpdateRequest.onsuccess = () => {
+      console.log('Values updated successfully!');
+    };
+    valueUpdateRequest.onerror = () => {
+      console.log('There was an error updating the value');
+    };
+  };
+
+  valueGetRequest.onerror = () => {
+    console.log('There was an error getting values');
   };
 };
 
