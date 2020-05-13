@@ -1,6 +1,12 @@
 let DB;
 let storedRecords;
 
+const pomodoros = document.querySelector('.pomodoros');
+const shortBreaks = document.querySelector('.shortBreaks');
+const longBreaks = document.querySelector('.longBreaks');
+
+let [totalPomodoros, totalShortBreaks, totalLongBreaks] = [0, 0, 0];
+
 const openDB = () => {
   let createDB = window.indexedDB.open('pomodoro', 1);
   createDB.onsuccess = () => (DB = createDB.result);
@@ -32,7 +38,7 @@ const drawChart = () => {
       labels: storedRecords.map(record => record.date),
       datasets: [
         {
-          label: '# of pomodoros per day',
+          label: 'Pomodoros per day',
           data: storedRecords.map(record => parseInt(record.pomodoros)),
           borderWidth: 1,
           borderColor: 'red',
@@ -53,13 +59,20 @@ const drawChart = () => {
       },
     },
   });
+  storedRecords.map(record => {
+    totalPomodoros += record.pomodoros;
+    totalShortBreaks += record.shortBreaks;
+    totalLongBreaks += record.longBreaks;
+  });
+  pomodoros.textContent = totalPomodoros;
+  shortBreaks.textContent = totalShortBreaks;
+  longBreaks.textContent = totalLongBreaks;
 };
 
 const main = () => {
   openDB();
   setTimeout(getRecordsFromDB, 500);
   setTimeout(drawChart, 1000);
-  // drawChart();
 };
 
 main();
