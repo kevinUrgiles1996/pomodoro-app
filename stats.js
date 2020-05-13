@@ -72,7 +72,11 @@ const drawChart = () => {
 const main = () => {
   openDB();
   setTimeout(getRecordsFromDB, 500);
-  setTimeout(drawChart, 1000);
+  setTimeout(() => {
+    document.querySelector('.loading').style.display = 'none';
+    document.querySelector('#myChart').style.display = 'block';
+    drawChart();
+  }, 1000);
 };
 
 main();
