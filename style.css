@@ -295,8 +295,12 @@ select {
     font-size: 10px;
   }
 
+  .chart-container {
+    padding: 0 50px;
+  }
+
   .summary-container {
     font-size: 15px;
-    padding: 0px 50px;
+    padding: 0px 25px;
   }
 }
