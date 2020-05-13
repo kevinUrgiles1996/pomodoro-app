@@ -269,6 +269,8 @@ const saveMinutesToDB = () => {
 
   valueGetRequest.onsuccess = () => {
     let data = valueGetRequest.result;
+    console.log(data);
+    console.log(pomodoroMinutes);
     data.pomodoroMinutes = parseInt(pomodoroMinutes);
     data.shortBreakMinutes = parseInt(shortBreakMinutes);
     data.longBreakMinutes = parseInt(longBreakMinutes);
