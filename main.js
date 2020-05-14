@@ -14,15 +14,15 @@ const longBreakMinutesInput = document.getElementsByName('long-minutes')[0];
 const saveButton = document.querySelector('.saveButton');
 const defaultButton = document.querySelector('.defaultButton');
 
+//Variables that store changes
+let pomodoroMinutes, shortBreakMinutes, longBreakMinutes;
+
 // Default Values, inserted the first time to the DB and to reset values
 const defaultValues = {
   pomodoroMinutes: 25,
   shortBreakMinutes: 5,
   longBreakMinutes: 10,
 };
-
-//Variables that store changes
-let pomodoroMinutes, shortBreakMinutes, longBreakMinutes;
 
 // Date Options
 const dateOptions = {
@@ -38,9 +38,22 @@ let swRegistration;
 // INDEXED DB
 let DB;
 
+// Timer Variables
 let totalSeconds;
 let intervalId;
 let timerType;
+
+const startTimer = minutes => {
+  clearInterval(intervalId);
+  totalSeconds = minutes * 60;
+  intervalId = setInterval(countDown, 1000);
+};
+
+const endTimer = () => {
+  clearInterval(intervalId);
+  showLocalNotification('Pomodoro App', 'Timer has ended', swRegistration);
+  setTimeout(() => saveOrUpdate(), 1000);
+};
 
 const countDown = () => {
   if (totalSeconds === 0) endTimer();
@@ -55,28 +68,16 @@ const countDown = () => {
   totalSeconds--;
 };
 
-const startContDown = minutes => {
-  clearInterval(intervalId);
-  totalSeconds = minutes * 60;
-  intervalId = setInterval(countDown, 1000);
-};
-
-const endTimer = () => {
-  clearInterval(intervalId);
-  showLocalNotification('Pomodoro App', 'Timer has ended', swRegistration);
-  setTimeout(() => saveOrUpdate(), 1000);
-};
-
 startButton.addEventListener('click', e => {
-  startContDown(pomodoroMinutes);
+  startTimer(pomodoroMinutes);
   timerType = 'pomodoros';
 });
 shortBreakButton.addEventListener('click', e => {
-  startContDown(shortBreakMinutes);
+  startTimer(shortBreakMinutes);
   timerType = 'shortBreaks';
 });
 longBreakButton.addEventListener('click', e => {
-  startContDown(longBreakMinutes);
+  startTimer(longBreakMinutes);
   timerType = 'longBreaks';
 });
 
@@ -151,7 +152,7 @@ const showLocalNotification = async (title, body, swRegistration) => {
   await swRegistration.showNotification(title, options);
 };
 
-const main = async () => {
+const enableNotifications = async () => {
   check();
   swRegistration = await registerServiceWorker();
   await requestNotificationPermission();
@@ -200,6 +201,54 @@ const openDB = () => {
   };
 };
 
+// To store the corresponding minutes in changing variables
+const getValuesFromDB = () => {
+  let transaction = DB.transaction(['values'], 'readwrite');
+  let objectStore = transaction.objectStore('values');
+  const getValues = objectStore.getAll();
+
+  getValues.onsuccess = e => {
+    const dbValues = e.target.result[0];
+    pomodoroMinutes = dbValues.pomodoroMinutes;
+    shortBreakMinutes = dbValues.shortBreakMinutes;
+    longBreakMinutes = dbValues.longBreakMinutes;
+  };
+
+  getValues.onerror = e => {
+    console.log('There was an error getting the values');
+    alert('Refresh the page');
+  };
+};
+
+// Validates if the date has already been inserted in the DB
+const saveOrUpdate = () => {
+  const key = new Date()
+    .toLocaleDateString('en-US', dateOptions)
+    .replace(',', '')
+    .replace(',', '');
+  let transaction = DB.transaction(['records'], 'readwrite');
+  let objectStore = transaction.objectStore('records');
+
+  let recordGetRequest = objectStore.get(key);
+
+  recordGetRequest.onsuccess = () => {
+    let data = recordGetRequest.result;
+    if (!data) saveNewRecord(objectStore);
+    else updateExistingRecord(data, objectStore);
+  };
+
+  recordGetRequest.onerror = () => {
+    console.error('There was an error getting the record');
+  };
+
+  transaction.oncomplete = () => {
+    console.log('Transaction completed');
+  };
+  transaction.onerror = () => {
+    console.log('There was an error');
+  };
+};
+
 saveNewRecord = objectStore => {
   const newRecord = {
     date: new Date()
@@ -232,34 +281,7 @@ updateExistingRecord = (data, objectStore) => {
   };
 };
 
-const saveOrUpdate = () => {
-  const key = new Date()
-    .toLocaleDateString('en-US', dateOptions)
-    .replace(',', '')
-    .replace(',', '');
-  let transaction = DB.transaction(['records'], 'readwrite');
-  let objectStore = transaction.objectStore('records');
-
-  let recordGetRequest = objectStore.get(key);
-
-  recordGetRequest.onsuccess = () => {
-    let data = recordGetRequest.result;
-    if (!data) saveNewRecord(objectStore);
-    else updateExistingRecord(data, objectStore);
-  };
-
-  recordGetRequest.onerror = () => {
-    console.error('There was an error getting the record');
-  };
-
-  transaction.oncomplete = () => {
-    console.log('Transaction completed');
-  };
-  transaction.onerror = () => {
-    console.log('There was an error');
-  };
-};
-
+// When changes are made in the settings modal, they need to be saved in DB
 const saveMinutesToDB = () => {
   let transaction = DB.transaction(['values'], 'readwrite');
   let objectStore = transaction.objectStore('values');
@@ -288,27 +310,8 @@ const saveMinutesToDB = () => {
   };
 };
 
-// To store the corresponding minutes in changing variables
-const getValuesFromDB = () => {
-  let transaction = DB.transaction(['values'], 'readwrite');
-  let objectStore = transaction.objectStore('values');
-  const getValues = objectStore.getAll();
-
-  getValues.onsuccess = e => {
-    const dbValues = e.target.result[0];
-    pomodoroMinutes = dbValues.pomodoroMinutes;
-    shortBreakMinutes = dbValues.shortBreakMinutes;
-    longBreakMinutes = dbValues.longBreakMinutes;
-  };
-
-  getValues.onerror = e => {
-    console.log('There was an error getting the values');
-    alert('Refresh the page');
-  };
-};
-
 document.addEventListener('DOMContentLoaded', e => {
-  main();
+  enableNotifications();
   openDB();
   setTimeout(getValuesFromDB, 500);
 });

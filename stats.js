@@ -52,9 +52,25 @@ const drawChart = () => {
             ticks: {
               beginAtZero: true,
               stepSize: 1,
+              fontFamily: 'Balsamiq Sans',
             },
           },
         ],
+        xAxes: [
+          {
+            gridLines: {
+              display: true,
+            },
+            ticks: {
+              fontFamily: 'Balsamiq Sans',
+            },
+          },
+        ],
+      },
+      legend: {
+        labels: {
+          fontFamily: 'Balsamiq Sans',
+        },
       },
     },
   });
