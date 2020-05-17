@@ -9,12 +9,6 @@
   font-family: 'Balsamiq Sans', cursive;
 }
 
-body {
-  /* font-family: sans-serif; */
-}
-
-/* Main App */
-
 .main-container {
   height: 100vh;
   width: 100vw;
@@ -283,7 +277,7 @@ select {
   }
 
   h1 {
-    font-size: 30px;
+    font-size: 25px;
   }
 
   .chart-container {
